@@ -44,3 +44,10 @@ Este projeto é um sistema de gerenciamento de restaurante, desenvolvido com um 
 ### **Contribua!**
 
 Fico feliz se você analisar o código, trazer sugestões, fazer seu Pull-Request para contribuir neste desenvolvimento!
+
+
+#### ** TODO **
+
+- Melhorar a tabela em Order.jsx  para mostrar os itens dos pedidos entregues
+- Construir uma identidade visual
+- Montar painel de controle resumido no componente Home
