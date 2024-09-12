@@ -1,0 +1,74 @@
+:root {
+    --primary-color: #FFD700;
+    --secondary-color: #FFF8DC;
+    --text-color: #333;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.menu-title {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.toggle-button {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toggle-button:hover {
+    background-color: #FFC107;
+}
+
+.filter-section {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-option, .filters, .sort-section {
+    margin-bottom: 20px;
+}
+
+h4 {
+    color: var(--primary-color);
+}
+
+.input-field, .textarea-field, .select-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    border-radius: 6px;
+}
+
+.submit-button {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    margin-left: 120px;
+    border: none;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #FFC107;
+}

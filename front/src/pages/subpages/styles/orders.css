@@ -1,0 +1,93 @@
+.orders-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.order-section, .orders-list {
+    width: 100%;
+    max-width: 45%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.client-selection, .menu-selection, .pedido-section {
+    margin-bottom: 20px;
+}
+
+.client-selection select, .pedido-section button, .menu-selection select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.menu-item, .pedido-item, .card-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+}
+
+
+.menu-item button, .pedido-item button {
+    background-color: #FFD700;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.menu-item button:hover, .pedido-item button:hover {
+    background-color: #FFC107;
+}
+
+.orders-list ul, .pedido-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.card-item {
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.card-item:hover {
+    background-color: #f8f9fa;
+}
+
+.order-details {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.total h4 {
+    margin: 20px 0;
+}
+
+ul {
+    list-style: none;
+}
+
+.menu-item, .pedido-item, .card-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
