@@ -12,10 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       const pedido = await this.create({ cliente_id, total });
       const pedido_id = pedido.id;
 
-      // Para acessar o model Item corretamente
       const Item = sequelize.models.Item;
 
-      // Cria os itens relacionados ao pedido
       await Item.bulkCreate(items.map(item => ({ pedido_id, cardapio_id: item })));
       return pedido;
     }
@@ -26,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
 
     static async updateStatus(id) {
       return this.update({ status: 2 }, { where: { id } });
+    }
+
+    static async updateStatusDelivered(id) {
+      return this.update({ status: 3 }, { where: { id }});
     }
   }
 

@@ -8,10 +8,10 @@ exports.createOrder = async (req, res) => {
     }
 
     try {
-        const order = await Pedido.createOrder(cliente_id, total, items);  // Criando um novo pedido
+        const order = await Pedido.createOrder(cliente_id, total, items);
         res.status(201).json({ message: "Pedido criado com sucesso", orderId: order.id });
     } catch (err) {
-        console.error(err);  // Verifica o erro
+        console.error(err);
         res.status(500).json({ error: "Erro ao criar o pedido" });
     }
 };
@@ -19,7 +19,7 @@ exports.createOrder = async (req, res) => {
 
 exports.getAllOrders = async (req, res) => {
     try {
-        const orders = await Pedido.getAllOrders();  // Buscando todos os pedidos
+        const orders = await Pedido.getAllOrders();
         res.status(200).json(orders);
     } catch (err) {
         res.status(500).json({ error: "Erro ao buscar pedidos" });
@@ -33,11 +33,11 @@ exports.getOrderById = async (req, res) => {
     try {
         const order = await Pedido.findByPk(id, {
             include: [
-                { model: sequelize.models.Cliente },  // Associação com Cliente
+                { model: sequelize.models.Cliente }, 
                 { 
                     model: sequelize.models.Item, 
-                    as: 'items', // Use o alias definido
-                    include: [{ model: sequelize.models.Cardapio, as: 'cardapio' }]  // Inclua o Cardapio com alias
+                    as: 'items',
+                    include: [{ model: sequelize.models.Cardapio, as: 'cardapio' }]
                 }
             ]
         });
@@ -55,12 +55,34 @@ exports.getOrderById = async (req, res) => {
 
 exports.updateOrderStatus = async (req, res) => {
     const { id } = req.params;
+    const { status } = req.body; 
 
     try {
-        await Pedido.updateStatus(id);  // Atualizando status do pedido
-        res.status(200).json({ message: "Status do pedido atualizado com sucesso" });
+        if (status === 2) {
+            await Pedido.updateStatus(id);
+        } else if (status === 3) {
+            await Pedido.updateStatusDelivered(id); 
+        } else {
+            return res.status(400).json({ message: "Status inválido" });
+        }
+
+        res.status(200).json({ message: `Status do pedido atualizado para ${status} com sucesso` });
     } catch (error) {
         res.status(500).json({ error: "Erro ao atualizar status do pedido" });
         console.log(error);
     }
 };
+
+exports.getDeliveredOrders = async (req, res) => {
+    try {
+        const deliveredOrders = await Pedido.findAll({
+            where: { status: 3 },
+            include: 'Cliente',
+        });
+        res.status(200).json(deliveredOrders);
+    } catch (err) {
+        res.status(500).json({ error: "Erro ao buscar pedidos entregues" });
+        console.log(err);
+    }
+};
+

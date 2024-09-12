@@ -1,4 +1,5 @@
 import Layout from '../../layout/Layout';
+import Table from '../../components/Table';
 import { React, useState, useEffect } from 'react';
 import './styles/orders.css';
 
@@ -13,7 +14,6 @@ function Orders() {
     const [selectedOrders, setSelectedOrders] = useState({});
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
 
-    // Fetch para clientes, menu e pedidos
     useEffect(() => {
         fetch(`${url}/costumers`)
             .then(res => res.json())
@@ -35,20 +35,17 @@ function Orders() {
             .catch(err => console.log("Erro ao carregar pedidos:", err));
     }, []);
 
-    // Função para adicionar item ao pedido
     const adicionarAoPedido = (item) => {
         setPedido(prevPedido => [...prevPedido, item]);
         setTotal(prevTotal => prevTotal + parseFloat(item.preco));
     };
 
-    // Função para remover item do pedido
     const removerDoPedido = (index) => {
         const itemRemovido = pedido[index];
         setPedido(pedido.filter((_, i) => i !== index));
         setTotal(prevTotal => prevTotal - parseFloat(itemRemovido.preco));
     };
 
-    // Ver detalhes do pedido
     const verDetalhesPedido = (id) => {
         if (!selectedOrders[id]) {
             fetch(`${url}/orders/${id}`)
@@ -69,7 +66,6 @@ function Orders() {
         }
     };
 
-    // Enviar pedido
     const enviarPedido = async () => {
         const itens = pedido.map(item => item.id);
         const pedidoData = {
@@ -105,15 +101,20 @@ function Orders() {
         }
     };
 
-    // Formatar data para exibição
     const formatDate = (value) => {
         const date = new Date(value);
         return date.toLocaleDateString('pt-BR');
     };
 
-    // Função para cancelar pedido
+    const fetchPedidos = () => {
+        fetch(`${url}/orders`)
+            .then(res => res.json())
+            .then(data => setCards(data))
+            .catch(err => console.log("Erro ao carregar pedidos:", err));
+    };
+    
     const handleDelete = async (id) => {
-        if (window.confirm("Tem certeza que deseja deletar?")) {
+        if (window.confirm("Tem certeza que deseja cancelar o pedido?")) {
             try {
                 const response = await fetch(`${url}/orders/${id}/status`, {
                     method: 'PATCH',
@@ -124,7 +125,7 @@ function Orders() {
                 });
                 if (response.ok) {
                     alert("Pedido cancelado com sucesso!");
-                    location.reload();
+                    fetchPedidos();
                 } else {
                     alert("Erro ao cancelar pedido.");
                 }
@@ -133,6 +134,29 @@ function Orders() {
             }
         }
     };
+    
+    const handleDelivered = async (id) => {
+        if (window.confirm("Tem certeza que deseja marcar este pedido como entregue?")) {
+            try {
+                const response = await fetch(`${url}/orders/${id}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 3 })
+                });
+                if (response.ok) {
+                    alert("Pedido marcado como entregue com sucesso!");
+                    fetchPedidos();
+                } else {
+                    alert("Erro ao marcar pedido como entregue.");
+                }
+            } catch (error) {
+                console.error("Erro ao marcar pedido como entregue:", error);
+            }
+        }
+    };
+    
 
     return (
         <Layout>
@@ -191,7 +215,7 @@ function Orders() {
                     <h3>Pedidos Feitos</h3>
                     <ul>
                         {cards.map(card => (
-                            <li key={card.id}>
+                            <li key={card.id} className="card">
                                 Pedido #{card.id} <br />
                                 Cliente: {card.Cliente.nome} <br /> {/* Corrigido o acesso ao cliente */}
                                 Total: {card.total} R$ <br />
@@ -206,14 +230,24 @@ function Orders() {
                                         </ul>
                                     </div>
                                 )}
-                                <button onClick={() => verDetalhesPedido(card.id)}>
-                                    {selectedOrders[card.id] ? 'Esconder Detalhes' : 'Ver Detalhes'}
-                                </button>
-                                <button onClick={() => handleDelete(card.id)}>Cancelar Pedido</button>
+                                <div className="bnt-group">
+                                    <button 
+                                    className="card-btn"
+                                    onClick={() => verDetalhesPedido(card.id)}>
+                                        {selectedOrders[card.id] ? 'Esconder Detalhes' : 'Ver Detalhes'}
+                                    </button>
+                                    <button 
+                                    className="card-btn"
+                                    onClick={() => handleDelete(card.id)}>Cancelar Pedido</button>
+                                    <button 
+                                    className="card-btn"
+                                    onClick={() => handleDelivered(card.id)}>Pedido Entregue</button>
+                                </div>
                             </li>
                         ))}
                     </ul>
                 </div>
+                <Table apiUrl={`${url}/orders/delivered`}/>
             </div>
         </Layout>
     );
